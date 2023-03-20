@@ -14,7 +14,7 @@ def check_mysql_gone_away(db_wrapper):
         def wrapper(self, query, args=None):
             try:
                 return f(self, query, args)
-            except (OperationalError, InterfaceError) as e:
+            except (OperationalError, InterfaceError, base.OperationalError, base.InterfaceError) as e:
                 logger.warn("MySQL server has gone away. Rerunning query: %s", query)
                 if (
                     'MySQL server has gone away' in str(e) or

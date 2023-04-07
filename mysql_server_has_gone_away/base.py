@@ -9,12 +9,21 @@ from django.db.backends.mysql import base
 
 logger = logging.getLogger('mysql_server_has_gone_away')
 
+try:
+    BaseOperationalError = base.OperationalError
+except AttributeError:
+    BaseOperationalError = OperationalError
+try:
+    BaseInterfaceError = base.InterfaceError
+except AttributeError:
+    BaseInterfaceError = InterfaceError
+
 def check_mysql_gone_away(db_wrapper):
     def decorate(f):
         def wrapper(self, query, args=None):
             try:
                 return f(self, query, args)
-            except (OperationalError, InterfaceError, base.OperationalError, base.InterfaceError) as e:
+            except (OperationalError, InterfaceError, BaseOperationalError, BaseInterfaceError) as e:
                 logger.warn("MySQL server has gone away. Rerunning query: %s", query)
                 if (
                     'MySQL server has gone away' in str(e) or

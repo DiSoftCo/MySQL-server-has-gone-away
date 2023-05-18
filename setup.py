@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="mysql_server_has_gone_away",
-    version="1.0.0",
+    version="1.0.1",
     description="Django myslq backend that fixes issue with long living connection",
     author='Andrew Koidan',
     author_email='deathangel908@gmail.com',
